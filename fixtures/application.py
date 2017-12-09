@@ -1,5 +1,6 @@
 from selenium import webdriver
 from fixtures.session import SessionHelper
+from fixtures.project import ProjectHelper
 
 class Application:
 
@@ -16,6 +17,7 @@ class Application:
         else:
             raise ValueError("Unrecognized browser '%s'" % browser)
         self.session = SessionHelper(self)
+        self.project = ProjectHelper(self)
         self.base_url = base_url
         self.wd.get(self.base_url)
 
@@ -30,6 +32,13 @@ class Application:
         wd = self.wd
         if not (wd.current_url.endswith("/index.php") and len(wd.find_elements_by_name("searchstring")) > 0):
             wd.get(self.base_url)
+
+    def open_manage_page(self):
+        wd = self.wd
+        if not (wd.current_url.endswith("/manage_overview_page.php") and
+                len(wd.find_elements_by_css_selector("td.form-title").text("Site Information")) > 0):
+            wd.find_element_by_link_text("Manage").click()
+
 
     def destroy(self):
         self.wd.quit()
