@@ -1,7 +1,7 @@
 from models.project import Project
 import random
 
-def test_delete_random_project(app, db):
+"""def test_delete_random_project(app, db):
     app.open_manage_page()
     app.project.open_project_manage_page()
     if len(db.get_projects_list()) == 0:
@@ -14,5 +14,23 @@ def test_delete_random_project(app, db):
     app.project.select_project_by_id(project.id)
     app.project.delete_project()
     new_projects = db.get_projects_list()
+    old_projects.remove(project)
+    assert old_projects == new_projects"""
+
+def test_delete_random_project(app, config):
+    app.open_manage_page()
+    app.project.open_project_manage_page()
+    if len(app.soap.get_projects_list("administrator", "root")) == 0:
+        app.project.create_new_project()
+        app.project.fill_project_form(Project(name="test", description="test"))
+        app.project.submit_project_creation()
+        app.project.open_project_manage_page()
+    username = config['webadmin']['username']
+    password = config['webadmin']['password']
+    old_projects = app.soap.get_projects_list(username, password)
+    project = random.choice(old_projects)
+    app.project.select_project_by_id(project.id)
+    app.project.delete_project()
+    new_projects = app.soap.get_projects_list(username, password)
     old_projects.remove(project)
     assert old_projects == new_projects

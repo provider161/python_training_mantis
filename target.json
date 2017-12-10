@@ -1,6 +1,6 @@
 {
   "web" : {
-          "baseUrl" : "localhost:8888/mantisbt-1.2.20/"
+          "baseUrl" : "http://localhost:8888/mantisbt-1.2.20"
   },
   "webadmin" : {
           "username" : "administrator",
@@ -8,7 +8,7 @@
   },
   "db" : {
           "host" : "127.0.0.1",
-          "port" : "8889",
+          "port" : 8889,
           "name" : "bugtracker",
           "user" : "root",
           "password" : "root"
